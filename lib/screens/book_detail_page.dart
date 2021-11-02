@@ -252,59 +252,48 @@ class _Details extends HookWidget {
                       ),
                     ),
                     item.embeddable!
-                        ? Column(
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               PreviewButtonWidget(
                                 volumeId: item.isbn13!,
                                 availability: true,
                                 title: item.title,
                               ),
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(0, 12.0, 0, 12.0),
-                                child: Divider(
-                                  color: Colors.grey,
-                                  indent: 20,
-                                  endIndent: 20,
-                                ),
+                              Column(
+                                children: [
+                                  IconButton(
+                                      icon: const Icon(
+                                        Icons.open_in_new,
+                                        color: Colors.grey,
+                                      ),
+                                      onPressed: //previewLink!.isNotEmpty && previewLink != null
+                                          () async {
+                                        url.launch(item.infoLink!);
+                                      }),
+                                  const Text(
+                                    'Info Link',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  )
+                                ],
                               ),
                             ],
                           )
                         : Container(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                            padding:
-                                const EdgeInsets.only(left: 4.0, right: 4.0),
-                            height: 60,
-                            child: const VerticalDivider(
-                              color: Colors.grey,
-                            )),
-                        Column(
-                          children: [
-                            IconButton(
-                                icon: const Icon(
-                                  Icons.open_in_new,
-                                  color: Colors.grey,
-                                ),
-                                onPressed: //previewLink!.isNotEmpty && previewLink != null
-                                    () async {
-                                  url.launch(item.infoLink!);
-                                }),
-                            const Text(
-                              'Info Link',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                                decoration: TextDecoration.underline,
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
+                      child: Divider(
+                        color: Colors.grey,
+                        indent: 20,
+                        endIndent: 20,
+                      ),
                     ),
                     const VerticalSpace(
-                      h: 35,
+                      h: 15,
                     ),
                     item.description != null
                         ? Column(

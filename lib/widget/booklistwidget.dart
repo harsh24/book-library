@@ -50,7 +50,7 @@ class CustomListTile extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding:
-                    const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
+                    const EdgeInsets.only(left: 8.0, top: 0.0, bottom: 8.0),
                 child: SizedBox(
                   width: 100,
                   height: 150,

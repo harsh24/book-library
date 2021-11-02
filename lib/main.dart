@@ -2,9 +2,7 @@ import 'package:fireauth/screens/book_detail_page.dart';
 import 'package:fireauth/screens/book_finder_page.dart';
 import 'package:fireauth/service/google_books_provider.dart';
 import 'package:fireauth/screens/search_results_page.dart';
-import 'package:fireauth/widget/pal.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -25,12 +23,6 @@ class AuthExampleApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Firebase Example App',
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            appBarTheme: const AppBarTheme(
-                backgroundColor: Palette.primaryColor,
-                systemOverlayStyle: SystemUiOverlayStyle.dark),
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
           home: const BookFinderPage(),
           onGenerateRoute: (settings) {
             return MaterialPageRoute(

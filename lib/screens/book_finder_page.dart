@@ -48,99 +48,85 @@ class _BookFinderPageState extends State<BookFinderPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size _size = MediaQuery.of(context).size;
-
-    return SafeArea(
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        body: SingleChildScrollView(
-          controller: _sc,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 32, bottom: 16),
-                    child: Text(
-                      'Explore thousands of\nbooks on the go',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontFamily: 'Mollen',
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed('/fav');
-                      },
-                      icon: const Icon(Icons.favorite_border)),
-                ],
-              ),
-              SizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                  child: Card(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    child: TextField(
-                        controller: textcontroller,
-                        decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            prefixIcon: Icon(Icons.search),
-                            hintText: 'Search for books...'),
-                        onChanged: _onChangeHandler),
-                  ),
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      body: SingleChildScrollView(
+        controller: _sc,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 16, top: 64, bottom: 16),
+              child: Text(
+                'Explore thousands of\nbooks on the go',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontFamily: 'Mollen',
                 ),
               ),
-              const VerticalSpace(h: 10),
-              SizedBox(
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  child: _results.isNotEmpty
-                      ? _results[0].totalItems != 0
-                          ? _SearchListView(
-                              results: _results,
-                              text: textcontroller.text,
-                            )
-                          : Center(
-                              child: Text(
-                                  '0 results for "${textcontroller.text}"'))
-                      : Consumer<GoogleBooksProvider>(
-                          builder: (context, gBookProvider, _) {
-                            return gBookProvider.bookItem.isEmpty
-                                ? (ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: 10,
-                                    itemBuilder: (context, index) {
-                                      return Shimmer.fromColors(
-                                        baseColor: Colors.grey,
-                                        highlightColor: Colors.grey[400]!,
-                                        child: ListTile(
-                                          title: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(16.0),
-                                              color: Colors.red,
-                                            ),
-                                            height: 130.0,
-                                            width: 50.0,
+            ),
+            SizedBox(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                child: Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: TextField(
+                      controller: textcontroller,
+                      decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          prefixIcon: Icon(Icons.search),
+                          hintText: 'Search for books...'),
+                      onChanged: _onChangeHandler),
+                ),
+              ),
+            ),
+            const VerticalSpace(h: 10),
+            SizedBox(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 500),
+                child: _results.isNotEmpty
+                    ? _results[0].totalItems != 0
+                        ? _SearchListView(
+                            results: _results,
+                            text: textcontroller.text,
+                          )
+                        : Center(
+                            child:
+                                Text('0 results for "${textcontroller.text}"'))
+                    : Consumer<GoogleBooksProvider>(
+                        builder: (context, gBookProvider, _) {
+                          return gBookProvider.bookItem.isEmpty
+                              ? (ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: 10,
+                                  itemBuilder: (context, index) {
+                                    return Shimmer.fromColors(
+                                      baseColor: Colors.grey,
+                                      highlightColor: Colors.grey[400]!,
+                                      child: ListTile(
+                                        title: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                            color: Colors.red,
                                           ),
+                                          height: 130.0,
+                                          width: 50.0,
                                         ),
-                                      );
-                                    }))
-                                : _CreateListView(
-                                    gBookProvider: gBookProvider,
-                                    sc: _sc,
-                                  );
-                          },
-                        ),
-                ),
+                                      ),
+                                    );
+                                  }))
+                              : _CreateListView(
+                                  gBookProvider: gBookProvider,
+                                  sc: _sc,
+                                );
+                        },
+                      ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -176,27 +162,25 @@ class _CreateListView extends HookWidget {
           ),
         ),
       ),
-      SizedBox(
-        child: ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: gBookProvider.bookItem.length + 1,
-          itemBuilder: (BuildContext context, int index) {
-            if (index == gBookProvider.bookItem.length) {
-              return const ListTile(
-                title: Center(child: CircularProgressIndicator()),
-              );
-            } else {
-              return GestureDetector(
-                onTap: () => Navigator.of(context).pushNamed('/detail',
-                    arguments: {'book': gBookProvider.bookItem[index]}),
-                child: BookListWidget(
-                  book: gBookProvider.bookItem[index],
-                ),
-              );
-            }
-          },
-        ),
+      ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: gBookProvider.bookItem.length + 1,
+        itemBuilder: (BuildContext context, int index) {
+          if (index == gBookProvider.bookItem.length) {
+            return const ListTile(
+              title: Center(child: CircularProgressIndicator()),
+            );
+          } else {
+            return GestureDetector(
+              onTap: () => Navigator.of(context).pushNamed('/detail',
+                  arguments: {'book': gBookProvider.bookItem[index]}),
+              child: BookListWidget(
+                book: gBookProvider.bookItem[index],
+              ),
+            );
+          }
+        },
       )
     ]);
   }
